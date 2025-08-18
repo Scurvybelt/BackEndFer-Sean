@@ -121,7 +121,7 @@ if ($method === 'POST') {
             <meta charset="UTF-8">
             <style>
                 body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; }
-                .header { background: linear-gradient(135deg, #d4c4b0 0%, #796f61 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+                .header { background: #d4c4b0; color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
                 .header h1 { margin: 0; font-size: 28px; font-weight: 300; }
                 .content { background: #f8f9fa; padding: 30px; border-radius: 0 0 10px 10px; }
                 .section { background: white; margin: 20px 0; padding: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
@@ -132,7 +132,7 @@ if ($method === 'POST') {
                 .attendance-yes { color: #28a745; font-weight: bold; }
                 .attendance-no { color: #dc3545; font-weight: bold; }
                 .footer { text-align: center; margin-top: 30px; padding: 20px; color: #666; font-size: 14px; border-top: 1px solid #ddd; }
-                .song-suggestion { background: #ffebd3; padding: 15px; border-radius: 5px; border-left: 4px solid #796f61; }
+                .song-suggestion { background:rgba(230, 230, 230, 0.94); padding: 15px; border-radius: 5px; border-left: 4px solid #796f61; }
                 .icon { font-size: 18px; margin-right: 8px; color: #796f61; }
             </style>
         </head>
