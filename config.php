@@ -3,7 +3,7 @@
 $host = 'localhost';
 $db = 'boda_invitaciones';
 $user = 'root';
-$pass = 'root';
+$pass = 'admin';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pass);
