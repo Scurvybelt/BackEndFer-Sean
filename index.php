@@ -63,11 +63,11 @@ if ($method === 'POST') {
     try {
         // Configuración del servidor SMTP
         $mail->isSMTP();
-        $mail->Host = 'smtp.ferandsean.com';
+        $mail->Host = 'smtp.hostinger.com';
         $mail->SMTPAuth = true;
         $mail->Username = 'hello@ferandsean.com';
         $mail->Password = 'F3R&S34N@wedding';
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // 'ssl'
+        $mail->SMTPSecure = 'ssl'; // 'ssl'
         $mail->Port = 465;
 
         // Remitente y destinatario
