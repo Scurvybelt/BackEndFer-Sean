@@ -16,6 +16,7 @@ require 'PHPMailer/Exception.php';
 require 'PHPMailer/PHPMailer.php';
 require 'PHPMailer/SMTP.php';
 
+
 $method = $_SERVER['REQUEST_METHOD'];
 
 // Responder a preflight OPTIONS
@@ -32,43 +33,46 @@ if ($method === 'GET') {
 }
 
 if ($method === 'POST') {
-    
     $input = json_decode(file_get_contents('php://input'), true);
-    if (!isset($input['attendance'], $input['lastName'], $input['name'], $input['phone'])) {
+    
+    if (!isset($input['attendance'], $input['fridayAttendance'], $input['saturdayAttendance'], $input['lastName'], $input['name'], $input['phone'])) {
         http_response_code(400);
         echo json_encode(['error' => 'Faltan campos requeridos']);
         exit;
     }
-    // Si attendance es "no", arrivalDay y songSuggestion deben ser vacíos
+    // Si attendance es "no", fridayAttendance, saturdayAttendance y songSuggestion deben ser vacíos
     if ($input['attendance'] === 'no') {
-        $input['arrivalDay'] = '';
+        $input['fridayAttendance'] = '';
+        $input['saturdayAttendance'] = '';
         $input['songSuggestion'] = '';
     }
     $id = $model->add([
-        'arrivalDay' => $input['arrivalDay'] ?? '',
         'attendance' => $input['attendance'],
+        'fridayAttendance' => $input['fridayAttendance'] ?? '',
+        'saturdayAttendance' => $input['saturdayAttendance'] ?? '',
         'lastName' => $input['lastName'],
         'name' => $input['name'] ?? '',
         'phone' => $input['phone'] ?? '',
         'songSuggestion' => $input['songSuggestion'] ?? ''
-    // PHPMailer 'use' statements moved to the top of the file.
     ]);
 
     
     $mail = new PHPMailer(true);
+    $correoEnviado = false;
+    $errorCorreo = '';
     try {
         // Configuración del servidor SMTP
         $mail->isSMTP();
-        $mail->Host = 'smtp.hostinger.com'; // ferandsean.com Cambia esto por tu servidor SMTP
+        $mail->Host = 'smtp.ferandsean.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'hello@ferandsean.com'; // Cambia esto por tu usuario SMTP
-        $mail->Password = 'F3R&S34N@wedding'; // Cambia esto por tu contraseña SMTP
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; //'ssl'
+        $mail->Username = 'hello@ferandsean.com';
+        $mail->Password = 'F3R&S34N@wedding';
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // 'ssl'
         $mail->Port = 465;
 
         // Remitente y destinatario
         $mail->setFrom('hello@ferandsean.com', 'Notificaciones');
-        $mail->addAddress('hello@ferandsean.com'); // Cambia esto por el correo de destino
+        $mail->addAddress('hello@ferandsean.com');
 
         // Contenido del correo
         $mail->isHTML(false);
@@ -77,18 +81,27 @@ if ($method === 'POST') {
             "Nombre: " . ($input['name'] ?? '') . "\n" .
             "Apellido: " . ($input['lastName'] ?? '') . "\n" .
             "Teléfono: " . ($input['phone'] ?? '') . "\n" .
-            "Asistencia: " . ($input['attendance'] ?? '') . "\n" .
-            "Día de llegada: " . ($input['arrivalDay'] ?? '') . "\n" .
+            "Asistencia general: " . ($input['attendance'] ?? '') . "\n" .
+            "Asistencia viernes: " . ($input['fridayAttendance'] ?? '') . "\n" .
+            "Asistencia sábado: " . ($input['saturdayAttendance'] ?? '') . "\n" .
             "Sugerencia de canción: " . ($input['songSuggestion'] ?? '');
 
         $mail->send();
+        $correoEnviado = true;
     } catch (Exception $e) {
-        // Puedes loguear el error si lo deseas
-        http_response_code(500);
-        echo json_encode(['error' => 'Error al enviar el correo: ' . $e->getMessage()]);
+        $errorCorreo = $e->getMessage();
     }
 
-    echo json_encode(['success' => true, 'id' => $id]);
+    $response = ['success' => true, 'id' => $id];
+    if ($correoEnviado) {
+        $response['correo'] = 'Correo enviado correctamente';
+    } else {
+        $response['correo'] = 'No se pudo enviar el correo';
+        if ($errorCorreo) {
+            $response['errorCorreo'] = $errorCorreo;
+        }
+    }
+    echo json_encode($response);
     exit;
 }
 

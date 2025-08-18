@@ -14,11 +14,12 @@ class InvitadoModel {
     }
 
     public function add($data) {
-        $sql = 'INSERT INTO invitados (arrivalDay, attendance, lastName, name, phone, songSuggestion) VALUES (?, ?, ?, ?, ?, ?)';
+        $sql = 'INSERT INTO invitados (attendance, fridayAttendance, saturdayAttendance, lastName, name, phone, songSuggestion) VALUES (?, ?, ?, ?, ?, ?, ?)';
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
-            $data['arrivalDay'],
             $data['attendance'],
+            $data['fridayAttendance'],
+            $data['saturdayAttendance'],
             $data['lastName'],
             $data['name'],
             $data['phone'],
