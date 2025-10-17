@@ -12,7 +12,7 @@ class InvitadoModel {
     }
 
     public function add($data) {
-        $sql = 'INSERT INTO invitados (attendance, fridayAttendance, lastName, name, phone, songSuggestion) VALUES (?, ?, ?, ?, ?, ?)';
+        $sql = 'INSERT INTO invitados (attendance, fridayAttendance, lastName, name, phone, dessertChoice) VALUES (?, ?, ?, ?, ?, ?)';
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
             $data['attendance'],
@@ -20,7 +20,7 @@ class InvitadoModel {
             $data['lastName'],
             $data['name'],
             $data['phone'],
-            $data['songSuggestion']
+            $data['dessertChoice']
         ]);
         return $this->pdo->lastInsertId();
     }

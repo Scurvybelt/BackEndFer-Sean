@@ -64,10 +64,10 @@ if ($method === 'POST') {
         exit;
     }
     
-    // Si attendance es "no", fridayAttendance y songSuggestion deben ser vacíos
+    // Si attendance es "no", fridayAttendance y dessertChoice deben ser vacíos
     if ($input['attendance'] === 'no') {
         $input['fridayAttendance'] = '';
-        $input['songSuggestion'] = '';
+        $input['dessertChoice'] = '';
     } else {
         // Si attendance es "yes", fridayAttendance es requerido
         if (!isset($input['fridayAttendance'])) {
@@ -84,7 +84,7 @@ if ($method === 'POST') {
             'lastName' => $input['lastName'],
             'name' => $input['name'] ?? '',
             'phone' => $input['phone'] ?? '',
-            'songSuggestion' => $input['songSuggestion'] ?? ''
+            'dessertChoice' => $input['dessertChoice'] ?? ''
         ]);
     } catch (Exception $e) {
         http_response_code(500);
@@ -175,7 +175,7 @@ if ($method === 'POST') {
                 <div class="section">
                     <h2>Song Suggestion</h2>
                     <div class="song-suggestion">
-                        ' . ($input['songSuggestion'] ? htmlspecialchars($input['songSuggestion']) : 'No song suggestion provided') . '
+                        ' . ($input['dessertChoice'] ? htmlspecialchars($input['dessertChoice']) : 'No song suggestion provided') . '
                     </div>
                 </div>
                 
@@ -200,7 +200,7 @@ if ($method === 'POST') {
             "General Attendance: " . ($input['attendance'] ?? 'N/A') . "\n" .
             "Friday Attendance: " . ($input['fridayAttendance'] ?? 'N/A') . "\n\n" .
             "SONG SUGGESTION:\n" .
-            ($input['songSuggestion'] ? $input['songSuggestion'] : 'No song suggestion provided') . "\n\n" .
+            ($input['dessertChoice'] ? $input['dessertChoice'] : 'No song suggestion provided') . "\n\n" .
             "Sent automatically from the wedding RSVP system.";
 
         $mail->send();

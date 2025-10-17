@@ -8,5 +8,5 @@ CREATE TABLE IF NOT EXISTS invitados (
     lastName VARCHAR(50) NOT NULL,
     name VARCHAR(50) NOT NULL,
     phone VARCHAR(20) NOT NULL,
-    songSuggestion VARCHAR(255)
+    dessertChoice VARCHAR(255)
 );
